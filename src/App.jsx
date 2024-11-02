@@ -15,7 +15,6 @@ export const App = () => {
     return (
         <Router>
             <div className="App">
-                <h2>OrderMe</h2>
                 <Routes>
                     <Route path="/login" element={<Login onLogin={handleLogin} />} />
                     <Route path="/register" element={<Register />} />
