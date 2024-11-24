@@ -7,51 +7,59 @@ const Login = ({ onLogin }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
+        setError('');
 
         try {
             await login(username, password);
             onLogin();
-            navigate('/users');
+            navigate('/products');
         } catch (error) {
             console.error('Login failed', error);
+            setError('Bad credentials');
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="login-container">
-            <div className="login-content">
-                <h2 className="login-title">OrderMe</h2>
-                <form className="login-form" onSubmit={handleSubmit}>
-                    <div className="input-group">
+        <div className="container d-flex justify-content-center align-items-center vh-100">
+            <div className="card p-4">
+                <h2 className="card-title text-center">OrderMe</h2>
+                {error && <div className="alert alert-danger" role="alert">{error}</div>}
+                <form onSubmit={handleSubmit}>
+                    <div className="mb-3">
+                        <label htmlFor="username" className="form-label">Username</label>
                         <input
                             type="text"
-                            className="input-field"
+                            className="form-control"
+                            id="username"
                             placeholder="Username"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             required
                         />
                     </div>
-                    <div className="input-group">
+                    <div className="mb-3">
+                        <label htmlFor="password" className="form-label">Password</label>
                         <input
                             type="password"
-                            className="input-field"
+                            className="form-control"
+                            id="password"
                             placeholder="Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
                         />
                     </div>
-                    <div className="submit-button-container">
-                        <button type="submit" className="submit-button" disabled={loading}>
-                            {loading && <span className="loading-icon"></span>}
+                    <div className="d-grid">
+                        <button type="submit" className="btn btn-primary" disabled={loading}>
+                            {loading && <span className="spinner-border spinner-border-sm me-2"></span>}
                             Login
                         </button>
                     </div>

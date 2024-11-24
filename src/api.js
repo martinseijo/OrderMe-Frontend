@@ -4,12 +4,11 @@ const api = axios.create({
     baseURL: 'http://localhost:8080',
 });
 
-// Interceptor para incluir el token en el encabezado
 api.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('token');
-        if (token && !config.url.includes('/auth/login')) {
-            config.headers.Authorization = `Bearer ${token}`; // Solo añade el token si no es el login
+        if (token && !config.url.includes('/auth/login') && !config.url.includes('/products')) {
+            config.headers.Authorization = `Bearer ${token}`; 
         }
         return config;
     },
@@ -28,12 +27,13 @@ export const login = async (username, password) => {
     }
 };
 
-export const getUsers = async () => {
+
+export const getProducts = async (username) => {
     try {
-        const response = await api.get('/auth/users'); // Ejemplo de otra solicitud que usa el token
+        const response = await api.post('/products', { username });
         return response.data;
     } catch (error) {
-        console.error('Error fetching users:', error);
+        console.error('Error fetching products:', error);
         throw error;
     }
 };

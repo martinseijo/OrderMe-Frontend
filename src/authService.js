@@ -24,10 +24,21 @@ export const register = async (userData) => {
 
 export const getUsers = async () => {
     try {
-        const response = await api.get('/auth/users'); // Usando la misma instancia `api`
+        const response = await api.get('/users'); // Usando la misma instancia `api`
         return response.data;
     } catch (error) {
         console.error('Error fetching users:', error);
+        throw error;
+    }
+};
+
+
+export const getProducts = async (username) => {
+    try {
+        const response = await api.post('/products', { username });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching products:', error);
         throw error;
     }
 };

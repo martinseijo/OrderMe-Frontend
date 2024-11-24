@@ -1,4 +1,3 @@
-// Register.jsx
 import React, { useState } from 'react';
 import { register } from '../authService';
 
@@ -34,42 +33,69 @@ export const Register = () => {
     };
 
     return (
-        <>
-            <p>Formulario de registro</p>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    name="username"
-                    placeholder="Username"
-                    value={formData.username}
-                    onChange={handleChange}
-                />
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    value={formData.password}
-                    onChange={handleChange}
-                />
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    value={formData.email}
-                    onChange={handleChange}
-                />
-                <input
-                    type="tel"
-                    name="phone"
-                    placeholder="Phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                />
-                <button type="submit">Register</button>
-            </form>
-
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            {success && <p style={{ color: 'green' }}>Registration successful!</p>}
-        </>
+        <div className="container d-flex justify-content-center align-items-center vh-100">
+            <div className="card p-4">
+                <h2 className="card-title text-center">Register</h2>
+                {error && <div className="alert alert-danger" role="alert">{error}</div>}
+                {success && <div className="alert alert-success" role="alert">Registration successful!</div>}
+                <form onSubmit={handleSubmit}>
+                    <div className="mb-3">
+                        <label htmlFor="username" className="form-label">Username</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="username"
+                            name="username"
+                            placeholder="Username"
+                            value={formData.username}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="password" className="form-label">Password</label>
+                        <input
+                            type="password"
+                            className="form-control"
+                            id="password"
+                            name="password"
+                            placeholder="Password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="email" className="form-label">Email</label>
+                        <input
+                            type="email"
+                            className="form-control"
+                            id="email"
+                            name="email"
+                            placeholder="Email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="phone" className="form-label">Phone</label>
+                        <input
+                            type="tel"
+                            className="form-control"
+                            id="phone"
+                            name="phone"
+                            placeholder="Phone"
+                            value={formData.phone}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div className="d-grid">
+                        <button type="submit" className="btn btn-primary">Register</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     );
 };
