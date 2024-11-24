@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { getProducts } from '../authService';
 import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify'; // Importar React Toastify
+import 'react-toastify/dist/ReactToastify.css'; // Importar estilos CSS
 
 const ProductList = () => {
     const [searchParams] = useSearchParams();
@@ -13,8 +15,6 @@ const ProductList = () => {
     const [observations, setObservations] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [successMessage, setSuccessMessage] = useState(null);  // Estado para mensaje de éxito
-    const [failureMessage, setFailureMessage] = useState(null);  // Estado para mensaje de error
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -22,7 +22,7 @@ const ProductList = () => {
                 const data = await getProducts(username);
                 setProducts(data);
             } catch (error) {
-                setError('Failed to fetch products.');
+                toast.error('Error al obtener productos.'); // Mostrar error al obtener productos
             } finally {
                 setLoading(false);
             }
@@ -59,15 +59,12 @@ const ProductList = () => {
 
         try {
             const response = await axios.post('http://192.168.1.138:8080/orders/create', orderRequest);
-            console.log('Order created:', response.data);
-            setSuccessMessage('¡Pedido realizado con éxito!'); // Mensaje de éxito
-            setFailureMessage(null); // Limpiar mensaje de error
-            setCart({}); // Resetear el carrito a vacío (todos los contadores a 0)
-            setObservations(''); // Limpiar las observaciones
+            toast.success('¡Pedido realizado con éxito!'); // Mostrar toast de éxito
+            setCart({}); // Resetear carrito
+            setObservations(''); // Limpiar observaciones
         } catch (error) {
             console.error('Error creating order:', error);
-            setFailureMessage('Hubo un problema al realizar el pedido. Inténtalo de nuevo.'); // Mensaje de error
-            setSuccessMessage(null); // Limpiar mensaje de éxito
+            toast.error('Hubo un problema al realizar el pedido. Inténtalo de nuevo.'); // Mostrar toast de error
         }
     };
 
@@ -83,21 +80,8 @@ const ProductList = () => {
 
     return (
         <div className="container">
+            <ToastContainer /> {/* Contenedor para los toasts */}
             <h2 className="text-center my-4">Carta</h2>
-
-            {/* Mensaje de éxito */}
-            {successMessage && (
-                <div className="alert alert-success" role="alert">
-                    {successMessage}
-                </div>
-            )}
-
-            {/* Mensaje de error */}
-            {failureMessage && (
-                <div className="alert alert-danger" role="alert">
-                    {failureMessage}
-                </div>
-            )}
 
             {groupedProducts.map(
                 (group) =>
