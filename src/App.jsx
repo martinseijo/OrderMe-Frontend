@@ -18,10 +18,10 @@ export const App = () => {
                 <Routes>
                     <Route path="/login" element={<Login onLogin={handleLogin} />} />
                     <Route path="/register" element={<Register />} />
-                    <Route path="/products" element={<ProductList username="martin" />} />
+                    <Route path="/products" element={<ProductList />} />
                     <Route path="/" element={<Navigate to="/login" />} />
                 </Routes>
             </div>
         </Router>
     );
-}
+};

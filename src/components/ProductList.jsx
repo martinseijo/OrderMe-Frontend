@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { getProducts } from '../authService';
+import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 
-const ProductList = ({ username }) => {
+const ProductList = () => {
+    const [searchParams] = useSearchParams();
+    const username = searchParams.get('username');
+    const tableId = searchParams.get('tableId');
+
     const [products, setProducts] = useState([]);
     const [cart, setCart] = useState({});
     const [observations, setObservations] = useState('');
@@ -45,9 +50,9 @@ const ProductList = ({ username }) => {
 
     const handleSubmit = async () => {
         const orderRequest = {
-            tableId: 1, // Replace with actual table ID
+            tableId,
             products: cart,
-            observations: observations,
+            observations,
         };
 
         try {
