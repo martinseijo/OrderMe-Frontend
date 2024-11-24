@@ -13,6 +13,8 @@ const ProductList = () => {
     const [observations, setObservations] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [successMessage, setSuccessMessage] = useState(null);  // Estado para mensaje de éxito
+    const [failureMessage, setFailureMessage] = useState(null);  // Estado para mensaje de error
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -56,10 +58,16 @@ const ProductList = () => {
         };
 
         try {
-            const response = await axios.post('http://localhost:8080/orders/create', orderRequest);
+            const response = await axios.post('http://192.168.1.138:8080/orders/create', orderRequest);
             console.log('Order created:', response.data);
+            setSuccessMessage('¡Pedido realizado con éxito!'); // Mensaje de éxito
+            setFailureMessage(null); // Limpiar mensaje de error
+            setCart({}); // Resetear el carrito a vacío (todos los contadores a 0)
+            setObservations(''); // Limpiar las observaciones
         } catch (error) {
             console.error('Error creating order:', error);
+            setFailureMessage('Hubo un problema al realizar el pedido. Inténtalo de nuevo.'); // Mensaje de error
+            setSuccessMessage(null); // Limpiar mensaje de éxito
         }
     };
 
@@ -76,6 +84,21 @@ const ProductList = () => {
     return (
         <div className="container">
             <h2 className="text-center my-4">Carta</h2>
+
+            {/* Mensaje de éxito */}
+            {successMessage && (
+                <div className="alert alert-success" role="alert">
+                    {successMessage}
+                </div>
+            )}
+
+            {/* Mensaje de error */}
+            {failureMessage && (
+                <div className="alert alert-danger" role="alert">
+                    {failureMessage}
+                </div>
+            )}
+
             {groupedProducts.map(
                 (group) =>
                     group.items.length > 0 && (
@@ -117,6 +140,7 @@ const ProductList = () => {
                         </div>
                     )
             )}
+
             <div className="mt-4">
                 <h4>Observaciones</h4>
                 <div className="form-group">
