@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { login } from '../authService';
 import { useNavigate } from 'react-router-dom';
-import '../styles/Login.css';
 
 const Login = ({ onLogin }) => {
     const [username, setUsername] = useState('');
@@ -21,7 +20,7 @@ const Login = ({ onLogin }) => {
             navigate('/products');
         } catch (error) {
             console.error('Login failed', error);
-            setError('Bad credentials');
+            setError('Invalid username or password.');
         } finally {
             setLoading(false);
         }
@@ -29,17 +28,17 @@ const Login = ({ onLogin }) => {
 
     return (
         <div className="container d-flex justify-content-center align-items-center vh-100">
-            <div className="card p-4">
-                <h2 className="card-title text-center">OrderMe</h2>
-                {error && <div className="alert alert-danger" role="alert">{error}</div>}
-                <form onSubmit={handleSubmit}>
+            <div className="card p-4 shadow-lg" style={{ maxWidth: '400px' }}>
+                <h2 className="card-title text-center text-primary">Welcome to OrderMe</h2>
+                {error && <div className="alert alert-danger mt-3">{error}</div>}
+                <form onSubmit={handleSubmit} className="mt-3">
                     <div className="mb-3">
                         <label htmlFor="username" className="form-label">Username</label>
                         <input
                             type="text"
                             className="form-control"
                             id="username"
-                            placeholder="Username"
+                            placeholder="Enter your username"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             required
@@ -51,13 +50,13 @@ const Login = ({ onLogin }) => {
                             type="password"
                             className="form-control"
                             id="password"
-                            placeholder="Password"
+                            placeholder="Enter your password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
                         />
                     </div>
-                    <div className="d-grid">
+                    <div className="d-grid mt-4">
                         <button type="submit" className="btn btn-primary" disabled={loading}>
                             {loading && <span className="spinner-border spinner-border-sm me-2"></span>}
                             Login

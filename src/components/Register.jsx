@@ -23,10 +23,10 @@ export const Register = () => {
         e.preventDefault();
         setError(null);
         setSuccess(false);
-        
+
         try {
-            await register(formData); // Llama a la función de registro
-            setSuccess(true); // Indica éxito en el registro
+            await register(formData);
+            setSuccess(true);
         } catch (error) {
             setError('Failed to register. Please try again.');
         }
@@ -34,11 +34,11 @@ export const Register = () => {
 
     return (
         <div className="container d-flex justify-content-center align-items-center vh-100">
-            <div className="card p-4">
-                <h2 className="card-title text-center">Register</h2>
-                {error && <div className="alert alert-danger" role="alert">{error}</div>}
-                {success && <div className="alert alert-success" role="alert">Registration successful!</div>}
-                <form onSubmit={handleSubmit}>
+            <div className="card p-4 shadow-lg" style={{ maxWidth: '500px' }}>
+                <h2 className="card-title text-center text-primary">Create Your Account</h2>
+                {error && <div className="alert alert-danger mt-3">{error}</div>}
+                {success && <div className="alert alert-success mt-3">Registration successful!</div>}
+                <form onSubmit={handleSubmit} className="mt-3">
                     <div className="mb-3">
                         <label htmlFor="username" className="form-label">Username</label>
                         <input
@@ -46,7 +46,7 @@ export const Register = () => {
                             className="form-control"
                             id="username"
                             name="username"
-                            placeholder="Username"
+                            placeholder="Enter your username"
                             value={formData.username}
                             onChange={handleChange}
                             required
@@ -59,7 +59,7 @@ export const Register = () => {
                             className="form-control"
                             id="password"
                             name="password"
-                            placeholder="Password"
+                            placeholder="Enter your password"
                             value={formData.password}
                             onChange={handleChange}
                             required
@@ -72,7 +72,7 @@ export const Register = () => {
                             className="form-control"
                             id="email"
                             name="email"
-                            placeholder="Email"
+                            placeholder="Enter your email"
                             value={formData.email}
                             onChange={handleChange}
                             required
@@ -85,14 +85,16 @@ export const Register = () => {
                             className="form-control"
                             id="phone"
                             name="phone"
-                            placeholder="Phone"
+                            placeholder="Enter your phone number"
                             value={formData.phone}
                             onChange={handleChange}
                             required
                         />
                     </div>
-                    <div className="d-grid">
-                        <button type="submit" className="btn btn-primary">Register</button>
+                    <div className="d-grid mt-4">
+                        <button type="submit" className="btn btn-primary">
+                            Register
+                        </button>
                     </div>
                 </form>
             </div>
