@@ -4,6 +4,7 @@ import { Register } from "./components/Register";
 import { useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ProductList from "./components/ProductList";
+import UserTables from "./components/UserTables.jsx";
 
 export const App = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -19,6 +20,7 @@ export const App = () => {
                     <Route path="/login" element={<Login onLogin={handleLogin} />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/products" element={<ProductList />} />
+                    <Route path="/tables" element={<UserTables />} />
                     <Route path="/" element={<Navigate to="/login" />} />
                 </Routes>
             </div>

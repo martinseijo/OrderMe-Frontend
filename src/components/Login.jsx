@@ -17,7 +17,7 @@ const Login = ({ onLogin }) => {
         try {
             await login(username, password);
             onLogin();
-            navigate('/products');
+            navigate('/tables');
         } catch (error) {
             console.error('Login failed', error);
             setError('Invalid username or password.');

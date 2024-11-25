@@ -42,3 +42,13 @@ export const getProducts = async (username) => {
         throw error;
     }
 };
+
+export const getUserTables = async () => {
+    try {
+        const response = await api.get('/tables'); 
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching tables:', error);
+        throw error;
+    }
+};
