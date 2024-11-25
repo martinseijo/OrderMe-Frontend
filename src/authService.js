@@ -52,3 +52,13 @@ export const getUserTables = async () => {
         throw error;
     }
 };
+
+export const getPendingCounts = async () => {
+    try {
+        const response = await api.get('/orders/pending/count');
+        return response.data; 
+    } catch (error) {
+        console.error('Error fetching pending counts:', error);
+        throw error;
+    }
+};
