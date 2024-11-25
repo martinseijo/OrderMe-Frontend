@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { getUserTables } from '../authService'; // Servicio para obtener las mesas
-import { toast, ToastContainer } from 'react-toastify'; // Notificaciones
-import 'react-toastify/dist/ReactToastify.css'; // Estilos de Toastify
+import { getUserTables } from '../authService';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const UserTables = () => {
     const [tables, setTables] = useState([]);
@@ -31,21 +31,38 @@ const UserTables = () => {
 
     return (
         <div className="container mt-4">
-            <ToastContainer /> {/* Contenedor para notificaciones */}
+            <ToastContainer />
             <h2 className="text-center my-4">Mesas Asignadas</h2>
-            <ul className="list-group">
-                {tables.map((table, index) => (
-                    <li
-                        key={index}
-                        className="list-group-item d-flex justify-content-between align-items-center"
-                    >
-                        <span>
-                            <strong>Mesa:</strong> {table.number}
-                        </span>
-                        {table.name && <span className="text-muted">{table.name}</span>}
-                    </li>
-                ))}
-            </ul>
+            <div className="card shadow-sm">
+                <div className="card-body">
+                    <div className="table-responsive">
+                        <table className="table table-hover align-middle">
+                            <thead className="table-primary">
+                                <tr>
+                                    <th>Mesa</th>
+                                    <th>Nombre</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {tables.length > 0 ? (
+                                    tables.map((table, index) => (
+                                        <tr key={index}>
+                                            <td>Mesa {table.number}</td>
+                                            <td>{table.name || <em className="text-muted">Sin asignar</em>}</td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="3" className="text-center text-muted">
+                                            No hay mesas asignadas.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };
