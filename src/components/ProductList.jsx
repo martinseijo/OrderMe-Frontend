@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { getProducts } from '../authService';
+import { getProducts } from '../authService.js';
+import { createOrder } from '../api.js';
 import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify'; // Importar React Toastify
-import 'react-toastify/dist/ReactToastify.css'; // Importar estilos CSS
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ProductList = () => {
     const [searchParams] = useSearchParams();
@@ -12,7 +13,6 @@ const ProductList = () => {
 
     const [products, setProducts] = useState([]);
     const [cart, setCart] = useState({});
-    const [observations, setObservations] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -22,7 +22,7 @@ const ProductList = () => {
                 const data = await getProducts(username);
                 setProducts(data);
             } catch (error) {
-                toast.error('Error al obtener productos.'); // Mostrar error al obtener productos
+                toast.error('Error al obtener productos.');
             } finally {
                 setLoading(false);
             }
@@ -34,15 +34,18 @@ const ProductList = () => {
     const addToCart = (productId) => {
         setCart((prevCart) => ({
             ...prevCart,
-            [productId]: (prevCart[productId] || 0) + 1,
+            [productId]: {
+                quantity: (prevCart[productId]?.quantity || 0) + 1,
+                observations: prevCart[productId]?.observations || '',
+            },
         }));
     };
 
     const removeFromCart = (productId) => {
         setCart((prevCart) => {
             const newCart = { ...prevCart };
-            if (newCart[productId] > 1) {
-                newCart[productId] -= 1;
+            if (newCart[productId]?.quantity > 1) {
+                newCart[productId].quantity -= 1;
             } else {
                 delete newCart[productId];
             }
@@ -50,21 +53,32 @@ const ProductList = () => {
         });
     };
 
+    const updateObservation = (productId, newObservation) => {
+        setCart((prevCart) => ({
+            ...prevCart,
+            [productId]: {
+                ...prevCart[productId],
+                observations: newObservation,
+            },
+        }));
+    };
+
     const handleSubmit = async () => {
         const orderRequest = {
             tableId,
-            products: cart,
-            observations,
+            products: Object.entries(cart).map(([productId, { quantity, observations }]) => ({
+                productId: parseInt(productId, 10),
+                quantity,
+                observations,
+            })),
         };
-
+    
         try {
-            const response = await axios.post('http://192.168.1.138:8080/orders/create', orderRequest);
-            toast.success('¡Pedido realizado con éxito!'); // Mostrar toast de éxito
-            setCart({}); // Resetear carrito
-            setObservations(''); // Limpiar observaciones
+            await createOrder(orderRequest); // Usar el método de authService
+            toast.success('¡Pedido realizado con éxito!');
+            setCart({});
         } catch (error) {
-            console.error('Error creating order:', error);
-            toast.error('Hubo un problema al realizar el pedido. Inténtalo de nuevo.'); // Mostrar toast de error
+            toast.error('Hubo un problema al realizar el pedido. Inténtalo de nuevo.');
         }
     };
 
@@ -80,7 +94,7 @@ const ProductList = () => {
 
     return (
         <div className="container">
-            <ToastContainer /> {/* Contenedor para los toasts */}
+            <ToastContainer />
             <h2 className="text-center my-4">Carta</h2>
 
             {groupedProducts.map(
@@ -98,6 +112,12 @@ const ProductList = () => {
                                                 <p className="card-text">
                                                     <strong>Price:</strong> {product.price.toFixed(2)} €
                                                 </p>
+                                                <textarea
+                                                    className="form-control mb-2"
+                                                    placeholder="Observaciones"
+                                                    value={cart[product.id]?.observations || ''}
+                                                    onChange={(e) => updateObservation(product.id, e.target.value)}
+                                                />
                                                 <div className="d-flex align-items-center justify-content-between">
                                                     <button
                                                         className="btn btn-danger btn-sm"
@@ -107,7 +127,7 @@ const ProductList = () => {
                                                         -
                                                     </button>
                                                     <span className="mx-2">
-                                                        <strong>Cantidad:</strong> {cart[product.id] || 0}
+                                                        <strong>Cantidad:</strong> {cart[product.id]?.quantity || 0}
                                                     </span>
                                                     <button
                                                         className="btn btn-success btn-sm"
@@ -125,19 +145,6 @@ const ProductList = () => {
                     )
             )}
 
-            <div className="mt-4">
-                <h4>Observaciones</h4>
-                <div className="form-group">
-                    <label htmlFor="observations">Comentarios:</label>
-                    <textarea
-                        id="observations"
-                        className="form-control"
-                        value={observations}
-                        onChange={(e) => setObservations(e.target.value)}
-                        placeholder="Añade cualquier observación para el pedido..."
-                    />
-                </div>
-            </div>
             <div className="text-center mt-4">
                 <button onClick={handleSubmit} className="btn btn-primary btn-lg">
                     Enviar Pedido

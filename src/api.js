@@ -38,4 +38,14 @@ export const getProducts = async (username) => {
     }
 };
 
+export const createOrder = async (orderRequest) => {
+    try {
+        const response = await api.post('/orders/create', orderRequest);
+        return response.data;
+    } catch (error) {
+        console.error('Error creating order:', error);
+        throw error;
+    }
+};
+
 export default api;
