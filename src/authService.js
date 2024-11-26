@@ -62,3 +62,23 @@ export const getPendingCounts = async () => {
         throw error;
     }
 };
+
+export const getPendingOrders = async (tableNumber) => {
+    try {
+        const response = await api.get(`/orders/pending/${tableNumber}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching pending orders:', error);
+        throw error;
+    }
+};
+
+export const updateOrderStatus = async (orderId, status) => {
+    try {
+        const response = await api.post('/orders/update', { orderId, status });
+        return response.data;
+    } catch (error) {
+        console.error('Error updating order status:', error);
+        throw error;
+    }
+};

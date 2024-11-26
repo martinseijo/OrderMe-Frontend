@@ -1,14 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { getUserTables, getPendingCounts } from '../authService';
 import { toast, ToastContainer } from 'react-toastify';
-import axios from 'axios';
 import 'react-toastify/dist/ReactToastify.css';
+import OrderDetails from './OrderDetails';
 
 const UserTables = () => {
     const [tables, setTables] = useState([]);
     const [pendingCounts, setPendingCounts] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [selectedTable, setSelectedTable] = useState(null);
+
+    const fetchPendingCounts = async () => {
+        try {
+            const data = await getPendingCounts();
+            setPendingCounts(data);
+        } catch (error) {
+            toast.error('No se pudo cargar la cantidad de pedidos pendientes.');
+        }
+    };
 
     useEffect(() => {
         const fetchTables = async () => {
@@ -28,25 +38,24 @@ const UserTables = () => {
     }, []);
 
     useEffect(() => {
-        const fetchPendingCounts = async () => {
-            try {
-                const data = await getPendingCounts(); // Usa la función del servicio
-                setPendingCounts(data); // Actualiza los pedidos pendientes
-            } catch (error) {
-                toast.error('No se pudo cargar la cantidad de pedidos pendientes.');
-            }
-        };
-    
         if (tables.length > 0) {
             fetchPendingCounts();
-            const interval = setInterval(fetchPendingCounts, 60000); // Ejecuta cada 60 segundos
-            return () => clearInterval(interval); // Limpia el intervalo al desmontar el componente
+            const interval = setInterval(fetchPendingCounts, 30000);
+            return () => clearInterval(interval);
         }
     }, [tables]);
+
+    const handleBack = (refresh = false) => {
+        setSelectedTable(null);
+        if (refresh) fetchPendingCounts();
+    };
 
     if (loading) return <div className="text-center mt-5">Cargando mesas...</div>;
 
     if (error) return <div className="alert alert-danger text-center mt-5">{error}</div>;
+
+    if (selectedTable)
+        return <OrderDetails table={selectedTable} onBack={handleBack} />;
 
     return (
         <div className="container mt-4">
@@ -61,6 +70,7 @@ const UserTables = () => {
                                     <th>Mesa</th>
                                     <th>Nombre</th>
                                     <th>Pedidos Pendientes</th>
+                                    <th>Acción</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -68,37 +78,43 @@ const UserTables = () => {
                                     tables.map((table, index) => (
                                         <tr key={index}>
                                             <td>Mesa {table.number}</td>
-                                            <td>{table.name || <em className="text-muted">Sin asignar</em>}</td>
+                                            <td>
+                                                {table.name || (
+                                                    <em className="text-muted">Sin asignar</em>
+                                                )}
+                                            </td>
                                             <td>
                                                 {pendingCounts[table.number] > 0 ? (
-                                                    <div
+                                                    <span
                                                         style={{
-                                                            position: 'relative',
-                                                            display: 'inline-block',
+                                                            backgroundColor: 'red',
+                                                            color: 'white',
+                                                            borderRadius: '50%',
+                                                            padding: '0.3em 0.6em',
+                                                            fontWeight: 'bold',
                                                         }}
                                                     >
-                                                        <span
-                                                            style={{
-                                                                backgroundColor: 'red',
-                                                                color: 'white',
-                                                                borderRadius: '50%',
-                                                                padding: '0.3em 0.6em',
-                                                                fontSize: '0.9em',
-                                                                fontWeight: 'bold',
-                                                            }}
-                                                        >
-                                                            {pendingCounts[table.number]}
-                                                        </span>
-                                                    </div>
+                                                        {pendingCounts[table.number]}
+                                                    </span>
                                                 ) : (
                                                     <span className="text-muted">Sin pedidos</span>
+                                                )}
+                                            </td>
+                                            <td>
+                                                {pendingCounts[table.number] > 0 && (
+                                                    <button
+                                                        className="btn btn-primary btn-sm"
+                                                        onClick={() => setSelectedTable(table)}
+                                                    >
+                                                        Ver
+                                                    </button>
                                                 )}
                                             </td>
                                         </tr>
                                     ))
                                 ) : (
                                     <tr>
-                                        <td colSpan="3" className="text-center text-muted">
+                                        <td colSpan="4" className="text-center text-muted">
                                             No hay mesas asignadas.
                                         </td>
                                     </tr>
