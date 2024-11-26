@@ -1,10 +1,10 @@
-import api from './api'; // Instancia configurada de Axios
+import api from './api'; 
 
 export const login = async (username, password) => {
     try {
         const response = await api.post('/auth/login', { username, password });
         const token = response.data.token;
-        localStorage.setItem('token', token); // Guarda el token
+        localStorage.setItem('token', token);
         return token;
     } catch (error) {
         console.error('Error during login:', error);
@@ -14,7 +14,7 @@ export const login = async (username, password) => {
 
 export const register = async (userData) => {
     try {
-        const response = await api.post('/auth/register', userData); // Usa la misma instancia `api`
+        const response = await api.post('/auth/register', userData); 
         return response.data;
     } catch (error) {
         console.error('Error during registration:', error);
@@ -24,7 +24,7 @@ export const register = async (userData) => {
 
 export const getUsers = async () => {
     try {
-        const response = await api.get('/users'); // Usando la misma instancia `api`
+        const response = await api.get('/users'); 
         return response.data;
     } catch (error) {
         console.error('Error fetching users:', error);

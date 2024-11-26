@@ -74,7 +74,7 @@ const ProductList = () => {
         };
     
         try {
-            await createOrder(orderRequest); // Usar el método de authService
+            await createOrder(orderRequest); 
             toast.success('¡Pedido realizado con éxito!');
             setCart({});
         } catch (error) {

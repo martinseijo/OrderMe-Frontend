@@ -40,7 +40,7 @@ const UserTables = () => {
     useEffect(() => {
         if (tables.length > 0) {
             fetchPendingCounts();
-            const interval = setInterval(fetchPendingCounts, 30000);
+            const interval = setInterval(fetchPendingCounts, 3000);
             return () => clearInterval(interval);
         }
     }, [tables]);
@@ -80,7 +80,7 @@ const UserTables = () => {
                                             <td>Mesa {table.number}</td>
                                             <td>
                                                 {table.name || (
-                                                    <em className="text-muted">Sin asignar</em>
+                                                    <em className="text-muted">Sin nombre</em>
                                                 )}
                                             </td>
                                             <td>
