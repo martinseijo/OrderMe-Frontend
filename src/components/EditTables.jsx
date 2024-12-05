@@ -104,49 +104,71 @@ const EditTables = () => {
 
             <div className="card shadow-sm">
                 <div className="card-body">
-                    {tables.map((table, index) => (
-                        <div key={table.id} className="d-flex align-items-center mb-3">
-                            <input
-                                type="number"
-                                className="form-control me-2"
-                                value={table.number || ''}
-                                onChange={(e) =>
-                                    handleInputChange(index, 'number', e.target.value)
-                                }
-                                placeholder="Número de Mesa"
-                            />
-                            <input
-                                type="text"
-                                className="form-control me-2"
-                                value={table.name || ''}
-                                onChange={(e) =>
-                                    handleInputChange(index, 'name', e.target.value)
-                                }
-                                placeholder="Nombre"
-                            />
-                            <input
-                                type="text"
-                                className="form-control me-2"
-                                value={table.description || ''}
-                                onChange={(e) =>
-                                    handleInputChange(index, 'description', e.target.value)
-                                }
-                                placeholder="Descripción"
-                            />
-                            <button
-                                className="btn btn-primary me-2"
-                                onClick={() => handleSaveTable(table.id, table)}
-                            >
-                                Guardar
-                            </button>
-                            <button
-                                className="btn btn-danger"
-                                onClick={() => handleDeleteTable(table.id)}
-                            >
-                                Eliminar
-                            </button>
-                        </div>
-                    ))}
+                    <div className="table-responsive">
+                        <table className="table table-hover align-middle">
+                            <thead className="table-primary">
+                                <tr>
+                                    <th>Mesa</th>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {tables.map((table, index) => (
+                                    <tr key={table.id}>
+                                        <td>
+                                            <input
+                                                type="number"
+                                                className="form-control"
+                                                value={table.number || ''}
+                                                onChange={(e) =>
+                                                    handleInputChange(index, 'number', e.target.value)
+                                                }
+                                                placeholder="Número de Mesa"
+                                            />
+                                        </td>
+                                        <td>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                value={table.name || ''}
+                                                onChange={(e) =>
+                                                    handleInputChange(index, 'name', e.target.value)
+                                                }
+                                                placeholder="Nombre"
+                                            />
+                                        </td>
+                                        <td>
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                value={table.description || ''}
+                                                onChange={(e) =>
+                                                    handleInputChange(index, 'description', e.target.value)
+                                                }
+                                                placeholder="Descripción"
+                                            />
+                                        </td>
+                                        <td>
+                                            <button
+                                                className="btn btn-primary me-2"
+                                                onClick={() => handleSaveTable(table.id, table)}
+                                            >
+                                                Guardar
+                                            </button>
+                                            <button
+                                                className="btn btn-danger"
+                                                onClick={() => handleDeleteTable(table.id)}
+                                            >
+                                                Eliminar
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
