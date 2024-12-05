@@ -3,6 +3,7 @@ import { getUserTables, getPendingCounts } from '../authService';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import OrderDetails from './OrderDetails';
+import { useNavigate } from 'react-router-dom';
 
 const UserTables = () => {
     const [tables, setTables] = useState([]);
@@ -10,11 +11,12 @@ const UserTables = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [selectedTable, setSelectedTable] = useState(null);
+    const navigate = useNavigate();
 
     const fetchPendingCounts = async () => {
         try {
             const data = await getPendingCounts();
-            setPendingCounts(data);
+            setPendingCounts(data || {});
         } catch (error) {
             toast.error('No se pudo cargar la cantidad de pedidos pendientes.');
         }
@@ -61,6 +63,14 @@ const UserTables = () => {
         <div className="container mt-4">
             <ToastContainer />
             <h2 className="text-center my-4">Mesas Asignadas</h2>
+            <div className="d-flex justify-content-end mb-3">
+                <button
+                    className="btn btn-warning"
+                    onClick={() => navigate('/edit-tables')}
+                >
+                    Editar Mesas
+                </button>
+            </div>
             <div className="card shadow-sm">
                 <div className="card-body">
                     <div className="table-responsive">
@@ -75,8 +85,8 @@ const UserTables = () => {
                             </thead>
                             <tbody>
                                 {tables.length > 0 ? (
-                                    tables.map((table, index) => (
-                                        <tr key={index}>
+                                    tables.map((table) => (
+                                        <tr key={table.id}>
                                             <td>Mesa {table.number}</td>
                                             <td>
                                                 {table.name || (

@@ -82,3 +82,32 @@ export const updateOrderStatus = async (orderId, status) => {
         throw error;
     }
 };
+
+export const addTable = async (tableData) => {
+    try {
+        const response = await api.post('/tables/create', tableData);
+        return response.data;
+    } catch (error) {
+        console.error('Error adding table:', error);
+        throw error;
+    }
+};
+
+export const updateTable = async (tableId, tableData) => {
+    try {
+        const response = await api.put(`/tables/update/${tableId}`, tableData);
+        return response.data;
+    } catch (error) {
+        console.error('Error updating table:', error);
+        throw error;
+    }
+};
+
+export const deleteTable = async (tableId) => {
+    try {
+        await api.delete(`/tables/delete/${tableId}`);
+    } catch (error) {
+        console.error('Error deleting table:', error);
+        throw error;
+    }
+};

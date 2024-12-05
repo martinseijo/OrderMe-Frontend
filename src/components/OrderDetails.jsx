@@ -39,10 +39,10 @@ const OrderDetails = ({ table, onBack }) => {
 
     return (
         <div className="container mt-4">
+            <h3 className="text-center mb-4">Pedidos Pendientes - Mesa {table.number}</h3>
             <button className="btn btn-secondary mb-3" onClick={() => onBack(true)}>
                 Volver
             </button>
-            <h3 className="text-center mb-4">Pedidos Pendientes - Mesa {table.number}</h3>
             <ul className="list-group">
                 {orders.map((order) => (
                     <li key={order.id} className="list-group-item d-flex justify-content-between align-items-center">
