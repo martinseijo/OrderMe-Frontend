@@ -35,7 +35,7 @@ export const getUsers = async () => {
 
 export const getProducts = async (username) => {
     try {
-        const response = await api.post('/products', { username });
+        const response = await api.post('/products/public', { username });
         return response.data;
     } catch (error) {
         console.error('Error fetching products:', error);
@@ -108,6 +108,55 @@ export const deleteTable = async (tableId) => {
         await api.delete(`/tables/delete/${tableId}`);
     } catch (error) {
         console.error('Error deleting table:', error);
+        throw error;
+    }
+};
+
+export const getUserProducts = async () => {
+    try {
+        const response = await api.get('/products');
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching products:', error);
+        throw error;
+    }
+};
+
+export const addProduct = async (productData) => {
+    try {
+        const response = await api.post('/products/create', productData);
+        return response.data;
+    } catch (error) {
+        console.error('Error adding product:', error);
+        throw error;
+    }
+};
+
+export const updateProduct = async (productId, productData) => {
+    try {
+        const response = await api.put(`/products/update/${productId}`, productData);
+        return response.data;
+    } catch (error) {
+        console.error('Error updating product:', error);
+        throw error;
+    }
+};
+
+export const deleteProduct = async (productId) => {
+    try {
+        await api.delete(`/products/delete/${productId}`);
+    } catch (error) {
+        console.error('Error deleting product:', error);
+        throw error;
+    }
+};
+
+export const getProductTypes = async () => {
+    try {
+        const response = await api.get('/productTypes');
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching product types:', error);
         throw error;
     }
 };

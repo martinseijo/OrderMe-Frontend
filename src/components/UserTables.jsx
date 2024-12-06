@@ -65,6 +65,12 @@ const UserTables = () => {
             <h2 className="text-center my-4">Mesas Asignadas</h2>
             <div className="d-flex justify-content-end mb-3">
                 <button
+                    className="btn btn-warning me-2"
+                    onClick={() => navigate('/edit-products')}
+                >
+                    Editar Productos
+                </button>
+                <button
                     className="btn btn-warning"
                     onClick={() => navigate('/edit-tables')}
                 >

@@ -7,7 +7,7 @@ const api = axios.create({
 api.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('token');
-        if (token && !config.url.includes('/auth/login') && !config.url.includes('/products') && !config.url.includes('/orders/create')) {
+        if (token && !config.url.includes('/auth/login') && !config.url.includes('/products/public') && !config.url.includes('/orders/create')) {
             config.headers.Authorization = `Bearer ${token}`; 
         }
         return config;
@@ -30,7 +30,7 @@ export const login = async (username, password) => {
 
 export const getProducts = async (username) => {
     try {
-        const response = await api.post('/products', { username });
+        const response = await api.post('/products/public', { username });
         return response.data;
     } catch (error) {
         console.error('Error fetching products:', error);
