@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { login } from '../authService';
 import { useNavigate } from 'react-router-dom';
+import logo from '../img/logo2.png'; // Importa la imagen aquí
 
 const Login = ({ onLogin }) => {
     const [username, setUsername] = useState('');
@@ -29,7 +30,8 @@ const Login = ({ onLogin }) => {
     return (
         <div className="container d-flex justify-content-center align-items-center vh-100">
             <div className="card p-4 shadow-lg" style={{ maxWidth: '400px' }}>
-                <h2 className="card-title text-center text-primary">Welcome to OrderMe</h2>
+                {/* Usa la imagen importada */}
+                <img src={logo} alt="OrderMe Logo" style={{ maxWidth: '200px' }} />
                 {error && <div className="alert alert-danger mt-3">{error}</div>}
                 <form onSubmit={handleSubmit} className="mt-3">
                     <div className="mb-3">
