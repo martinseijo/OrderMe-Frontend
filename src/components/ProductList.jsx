@@ -101,7 +101,7 @@ const ProductList = () => {
             <div className="d-flex justify-content-end mb-3">
                 <button
                     className="btn btn-warning me-2"
-                    onClick={() => navigate('/bill')}
+                    onClick={() => navigate(`/bill?username=${username}&tableId=${tableId}`)}
                 >
                     Ver Cuenta
                 </button>
