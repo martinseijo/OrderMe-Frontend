@@ -8,6 +8,7 @@ import UserTables from "./components/UserTables.jsx";
 import OrderDetails from "./components/OrderDetails.jsx";
 import EditTables from "./components/EditTables.jsx";
 import EditProducts from "./components/EditProducts.jsx";
+import Bill from "./components/Bill.jsx";
 
 export const App = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -24,6 +25,7 @@ export const App = () => {
                     <Route path="/register" element={<Register />} />
                     <Route path="/products" element={<ProductList />} />
                     <Route path="/edit-products" element={<EditProducts />} />
+                    <Route path="/bill" element={<Bill />} />
                     <Route path="/tables" element={<UserTables />} />
                     <Route path="/edit-tables" element={<EditTables />} />
                     <Route path="/orders" element={<OrderDetails />} />

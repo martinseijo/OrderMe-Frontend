@@ -5,6 +5,7 @@ import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 const ProductList = () => {
     const [searchParams] = useSearchParams();
@@ -15,6 +16,7 @@ const ProductList = () => {
     const [cart, setCart] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -96,7 +98,14 @@ const ProductList = () => {
         <div className="container">
             <ToastContainer />
             <h2 className="text-center my-4">Carta</h2>
-
+            <div className="d-flex justify-content-end mb-3">
+                <button
+                    className="btn btn-warning me-2"
+                    onClick={() => navigate('/bill')}
+                >
+                    Ver Cuenta
+                </button>
+            </div>
             {groupedProducts.map(
                 (group) =>
                     group.items.length > 0 && (

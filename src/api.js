@@ -7,8 +7,15 @@ const api = axios.create({
 api.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('token');
-        if (token && !config.url.includes('/auth/login') && !config.url.includes('/products/public') && !config.url.includes('/orders/create')) {
-            config.headers.Authorization = `Bearer ${token}`; 
+        if (
+            token &&
+            !config.url.includes('/auth/login') &&
+            !config.url.includes('/products/public') &&
+            !config.url.includes('/orders/create') &&
+            !config.url.includes('/orders/served') &&
+            !config.url.includes('/public/paid')
+        ) {
+            config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
     },
@@ -26,7 +33,6 @@ export const login = async (username, password) => {
         throw error;
     }
 };
-
 
 export const getProducts = async (username) => {
     try {
@@ -48,4 +54,22 @@ export const createOrder = async (orderRequest) => {
     }
 };
 
+export const getServedOrders = async (username, tableNumber) => {
+    try {
+        const response = await api.get(`/orders/served/${username}/${tableNumber}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching served orders:', error);
+        throw error;
+    }
+};
+
+export const markOrdersAsPaid = async (orderIds) => {
+    try {
+        await api.post('/orders/public/paid', orderIds);
+    } catch (error) {
+        console.error('Error marking orders as paid:', error);
+        throw error;
+    }
+};
 export default api;
