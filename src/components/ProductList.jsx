@@ -68,6 +68,7 @@ const ProductList = () => {
     const handleSubmit = async () => {
         const orderRequest = {
             tableId,
+            username,
             products: Object.entries(cart).map(([productId, { quantity, observations }]) => ({
                 productId: parseInt(productId, 10),
                 quantity,
